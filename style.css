@@ -1,0 +1,203 @@
+:root {
+    --clr-neutral-900: #191919;
+    --clr-neutral-100: white;
+    --clr-accent-100: #5dbcf9;
+    --width: 20rem;
+    --height: 10rem;
+    --thickness: 0.5rem;
+    --angle-start: 0deg;
+    --angle-end: -360deg;
+    --x-start: 0;
+    --y-start: 0;
+    --z-start: 0;
+    --x-end: 1;
+    --y-end: 0;
+    --z-end: 0;
+    --perspective: 10000px;
+    --box-rotation-angle: 30deg;
+    --duration: 12s;
+    --clr-background: linear-gradient(
+        var(--clr-neutral-100),
+        #e3e3e3,
+        #cccccc,
+        #a3a3a3,
+        #cccccc,
+        #e3e3e3,
+        var(--clr-neutral-100)
+    );
+}
+
+*,
+*::before,
+*:after {
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--clr-neutral-900);
+    display: grid;
+    padding: 0;
+    margin: 0;
+    place-items: center;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.box {
+    transform: perspective(var(--perspective))
+        rotateY(var(--box-rotation-angle));
+    transform-style: preserve-3d;
+    transform-origin: 50% 50% calc(var(--thickness) / -2);
+}
+
+@keyframes spin {
+    0% {
+        transform: perspective(var(--perspective))
+            rotate3d(
+                var(--x-start),
+                var(--y-start),
+                var(--z-start),
+                var(--angle-start)
+            );
+        transform-style: preserve-3d;
+        transform-origin: 50% 50% calc(var(--thickness) / -2);
+    }
+    100% {
+        transform: perspective(var(--perspective))
+            rotate3d(var(--x-end), var(--y-end), var(--z-end), var(--angle-end));
+        transform-style: preserve-3d;
+        transform-origin: 50% 50% calc(var(--thickness) / -2);
+    }
+}
+
+.box {
+    perspective: perspective(var(--perspective));
+}
+
+.container {
+    background: var(--clr-background);
+    width: var(--width);
+    height: var(--height);
+    position: relative;
+    animation: spin var(--duration) linear infinite;
+    transform: perspective(var(--perspective));
+}
+
+.card {
+    /* FRONT */
+    background: var(--clr-neutral-100);
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card:nth-of-type(2) {
+    transform: perspective(var(--perspective)) rotateX(90deg);
+    transform-style: preserve-3d;
+    transform-origin: 50% 50% calc(var(--thickness) / -2);
+}
+
+.card::after {
+    /* TOP */
+    content: '';
+    width: var(--thickness);
+    height: var(--width);
+    background: var(--clr-background);
+    z-index: 20;
+    position: absolute;
+    top: calc(var(--height) * -1);
+    left: calc(var(--width) / 2 - var(--thickness));
+    transform: perspective(var(--perspective)) rotateX(90deg) rotateZ(90deg)
+        translateY(calc(var(--thickness) / -2))
+        translateX(calc(var(--thickness) / -2));
+    transform-style: preserve-3d;
+    transform-origin: center;
+    box-shadow: aqua;
+}
+
+.card > div {
+    /* BACK */
+    width: 100%;
+    height: 100%;
+    background: var(--clr-background);
+    z-index: 20;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: rotateX(180deg) perspective(var(--perspective))
+        translateZ(calc(var(--thickness) * 1));
+    transform-style: preserve-3d;
+    transform-origin: center;
+}
+
+.card span > span::before {
+    /* RIGHT */
+    content: '';
+    height: 100%;
+    width: var(--thickness);
+    background: var(--clr-background);
+    z-index: 21;
+    position: absolute;
+    left: var(--width);
+    top: 0;
+    transform: perspective(var(--perspective)) rotateY(90deg)
+        translateZ(calc(var(--thickness) / -2))
+        translateX(calc(var(--thickness) / 2));
+    transform-style: preserve-3d;
+    transform-origin: center;
+}
+
+.card span::before {
+    /* BOTTOM */
+    content: '';
+    width: var(--thickness);
+    height: var(--width);
+    background: var(--clr-background);
+    z-index: 21;
+    position: absolute;
+    top: 0;
+    left: calc(var(--width) / 2 - var(--thickness));
+    transform: perspective(var(--perspective)) rotateX(90deg) rotateZ(90deg)
+        translateY(calc(var(--thickness) / -2))
+        translateX(calc(var(--thickness) / -2));
+    transform-style: preserve-3d;
+    transform-origin: center;
+}
+
+.card span::after {
+    /* LEFT */
+    content: '';
+    height: 100%;
+    width: var(--thickness);
+    background: var(--clr-background);
+    z-index: 21;
+    position: absolute;
+    left: calc(var(--thickness) / -2);
+    top: 0;
+    transform: perspective(var(--perspective)) rotateY(90deg)
+        translateX(calc(var(--thickness) / 2));
+    transform-style: preserve-3d;
+    transform-origin: center;
+}
+
+.text-container {
+    width: 100%;
+    height: 50%;
+}
+
+.card > div > .textcontainer {
+    transform: rotateX(-180deg) rotateY(180deg);
+    transform-origin: center;
+    background: black;
+}
+
+.text {
+    display: grid;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+    font-size: 3rem;
+    font-family: 'Kaushan Script', cursive;
+}
